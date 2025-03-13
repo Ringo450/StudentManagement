@@ -1,6 +1,5 @@
 package rasetech.StudentManagement;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,4 @@ public class StudentManagement2Application {
 	public String hello() {
 		return "Hello, World!";
 	}
-	//GET POST
-	//GETは取得する、リクエストの結果を受け取る
-	//POSTは情報を与える、渡す
 }
