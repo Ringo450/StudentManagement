@@ -50,6 +50,7 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'//プログラム実行するとき”のみ”使う
+    
     testImplementation 'org.springframework.boot:spring-boot-starter-test'//testするときだけ使う
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
