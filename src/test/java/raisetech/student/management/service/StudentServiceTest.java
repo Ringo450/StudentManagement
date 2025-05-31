@@ -126,4 +126,35 @@ class StudentServiceTest {
     verify(repository, times(1)).registerStudentCourse(course);
     assertEquals(detail, result); // 引数と同じオブジェクトが返る
   }
+
+  @Test
+  void 受講生情報更新_受講生とコースが正しく更新されること() {
+    // --- 準備 ---
+
+    // モックのStudent
+    Student student = new Student();
+    student.setId("s123");
+
+    // モックのコース（今回は2件作ってみる）
+    StudentCourse course1 = new StudentCourse();
+    StudentCourse course2 = new StudentCourse();
+    List<StudentCourse> courseList = List.of(course1, course2);
+
+    // モックのStudentDetail
+    StudentDetail detail = new StudentDetail();
+    detail.setStudent(student);
+    detail.setStudentCourseList(courseList);
+
+    // --- 実行 ---
+    sut.updateStudent(detail);
+
+    // --- 検証 ---
+    verify(repository, times(1)).updateStudent(student);
+    verify(repository, times(1)).updateStudentCourse(course1);
+    verify(repository, times(1)).updateStudentCourse(course2);
+
+    //🧠 ポイント解説！
+    //times(1) を明示してるのは、「ちゃんと1回だけ呼ばれたか」をチェックしてるってこと
+    //    StudentCourse が1件なら verify(...).updateStudentCourse(course) 1回で済む。　⇒　件数が増えたらその数だけ verify(...) を書けばOK
+  }
 }

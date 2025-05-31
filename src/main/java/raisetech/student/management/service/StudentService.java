@@ -131,6 +131,14 @@ public class StudentService {
     studentDetail.getStudentCourseList()
         .forEach(studentCourse -> repository.updateStudentCourse(studentCourse));
 
-    
+    //🔍 処理の流れは超シンプル：
+    // １．repository.updateStudent(...) が1回呼ばれる
+    // ２．getStudentCourseList() の件数だけ updateStudentCourse(...) が呼ばれる
+
+    //🧪 テストの目的は：
+    //updateStudent() が 正しく呼ばれたか（1回）
+    //updateStudentCourse() が コースの件数だけ呼ばれたか
+    //戻り値は void だから、結果の確認は不要
+
   }
 }
