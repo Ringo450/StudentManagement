@@ -36,6 +36,10 @@ public class StudentService {
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList();//controllerの全件検索をServiseで行う。
     return converter.convertStudentDetails(studentList, studentCourseList);
 
+    //🔧 テストを書く準備（ざっくりと）
+    //フレームワーク: JUnit 5 (Jupiter) + Mockito
+    //テスト対象: StudentService
+    //モック対象: StudentRepository, StudentConverter
   }
 
   /**
@@ -49,9 +53,9 @@ public class StudentService {
     List<StudentCourse> studentCourse = repository.searchStudentCourse(student.getId());
     return new StudentDetail(student, studentCourse);
     //✅ このメソッドの流れ：
-    //repository.searchStudent(id) を呼び出して Student を取得
-    //student.getId() を使って、repository.searchStudentCourse(...) を呼び出す
-    //最後に new StudentDetail(student, studentCourse) を返す
+    //1. repository.searchStudent(id) を呼び出して Student を取得
+    //2. student.getId() を使って、repository.searchStudentCourse(...) を呼び出す
+    //3. 最後に new StudentDetail(student, studentCourse) を返す
 
     //🧪 つまり、テストで確認すべきこと
     //リポジトリが 期待通りに呼ばれているか
@@ -76,6 +80,17 @@ public class StudentService {
       repository.registerStudentCourse(studentCourse);
     });
     return studentDetail;
+
+    //✔ ポイント整理
+    //1. Student を取り出して、リポジトリで登録する（repository.registerStudent(...)）
+    //2. StudentCourse のリストをループして、初期化処理（initStudentsCourse()）＋登録（registerStudentCourse()）
+    //3. 最後に StudentDetail を返す
+
+    //🧪 テストで確認すべきこと
+    //repository.registerStudent() が1回呼ばれていること
+    //studentCourse の数だけ registerStudentCourse() が呼ばれること
+    //戻り値が 引数と同じ studentDetail であること
+    //※ initStudentsCourse() の中身（日時とか）は「単体テストで細かく確認しなくてもOK！」って考えるのが一般的。Mockじゃない private メソッドだから。
   }
 
   /**
