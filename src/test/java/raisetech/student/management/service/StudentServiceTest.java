@@ -1,5 +1,6 @@
 package raisetech.student.management.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,5 +56,37 @@ class StudentServiceTest {
         studentCourseList);//convertクラスのconvertメソッドも1回呼び出してますよ。
     //後処理
     //ここでDBをもとに戻す。
+  }
+
+  @Test
+  void 受講生詳細検索_リポジトリが正しく呼ばれ_正しい受講生詳細が返ること() {
+    // --- 準備 ---
+    String studentId = "100";
+
+    // Mock用のStudentとStudentCourse作成
+    Student mockStudent = new Student();
+    mockStudent.setId(studentId); // getId()が動作するように
+
+    List<StudentCourse> mockCourseList = List.of(new StudentCourse());
+
+    // モックの戻り値設定
+    when(repository.searchStudent(studentId)).thenReturn(mockStudent);
+    when(repository.searchStudentCourse(studentId)).thenReturn(mockCourseList);
+
+    // --- 実行 ---
+    StudentDetail result = sut.searchStudent(studentId);
+
+    // --- 検証 ---
+    verify(repository, times(1)).searchStudent(studentId);
+    verify(repository, times(1)).searchStudentCourse(studentId);
+
+    // 戻り値が正しいか（identity比較OK）
+    assertEquals(mockStudent, result.getStudent());
+    assertEquals(mockCourseList, result.getStudentCourseList());
+
+    //🔍 解説ポイント
+    //mockStudent.setId(...) をちゃんとやらないと、2つ目の searchStudentCourse(student.getId()) が null で動かなくなる可能性がある
+    //StudentDetail の中身（student と courseList）がちゃんとMockの値と一致してるかを assertEquals でチェック
+    //verify(...) でメソッドが1回だけちゃんと呼ばれてるか確認
   }
 }

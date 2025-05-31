@@ -35,6 +35,7 @@ public class StudentService {
     List<Student> studentList = repository.search();
     List<StudentCourse> studentCourseList = repository.searchStudentCourseList();//controllerの全件検索をServiseで行う。
     return converter.convertStudentDetails(studentList, studentCourseList);
+
   }
 
   /**
@@ -47,6 +48,14 @@ public class StudentService {
     Student student = repository.searchStudent(id);
     List<StudentCourse> studentCourse = repository.searchStudentCourse(student.getId());
     return new StudentDetail(student, studentCourse);
+    //✅ このメソッドの流れ：
+    //repository.searchStudent(id) を呼び出して Student を取得
+    //student.getId() を使って、repository.searchStudentCourse(...) を呼び出す
+    //最後に new StudentDetail(student, studentCourse) を返す
+
+    //🧪 つまり、テストで確認すべきこと
+    //リポジトリが 期待通りに呼ばれているか
+    //Student と StudentCourse の値から、StudentDetail が正しく作られているか
   }
 
   /**
