@@ -70,8 +70,9 @@ class StudentServiceTest {
 
   @Test
   void 受講生詳細検索_リポジトリが正しく呼ばれ_正しい受講生詳細が返ること() {
-    // --- 準備 ---
-    String studentId = "100";
+    // --- 準備 ---実際のアプリケーションでは IDが自動採番されてたり、1～100までの制限があったりする。
+    //でも、テストの中ではそこまで厳密に再現しなくてOKなことが多い！
+    String studentId = "123";
 
     // Mock用のStudentとStudentCourse作成
     Student mockStudent = new Student();
@@ -100,5 +101,29 @@ class StudentServiceTest {
     //verify(...) でメソッドが1回だけちゃんと呼ばれてるか確認
   }
 
+  @Test
+  void 受講生詳細登録_リポジトリの登録メソッドが正しく呼ばれ_引数のStudentDetailが返ること() {
+    // --- 準備 ---
 
+    // モックのStudent作成
+    Student student = new Student();
+    student.setId("123");
+
+    // モックのStudentCourse（1件だけ）
+    StudentCourse course = new StudentCourse();
+    List<StudentCourse> courseList = List.of(course);
+
+    // モックのStudentDetail
+    StudentDetail detail = new StudentDetail();
+    detail.setStudent(student);
+    detail.setStudentCourseList(courseList);
+
+    // --- 実行 ---
+    StudentDetail result = sut.registerStudent(detail);
+
+    // --- 検証 ---
+    verify(repository, times(1)).registerStudent(student);
+    verify(repository, times(1)).registerStudentCourse(course);
+    assertEquals(detail, result); // 引数と同じオブジェクトが返る
+  }
 }
