@@ -24,7 +24,8 @@ class StudentServiceTest {
   void 受講生詳細一覧検索＿リポジトリとコンバーターの処理が適切に呼び出せていること() {//メソッドや変数名には、日本語使える！
     // Mock化　Mockito Stub
     //事前準備
-    StudentService sut = new StudentService();//Testするときに使う、sut＝system under test 正常に動作していることを表す。被試験対象
+    StudentService sut = new StudentService(repository,
+        converter);//Testするときに使う、sut＝system under test 正常に動作していることを表す。被試験対象
     List<StudentDetail> expected = new ArrayList<>();
 
     //実行
